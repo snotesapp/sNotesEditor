@@ -682,7 +682,7 @@
             touchaction ="auto";
              await HideCanvasContextMenu();
              await HideImgContextMenu();
-            ContextImg = null;
+            //ContextImg = null;
            
         }
     }
@@ -760,8 +760,8 @@
         dataSvs.editNote.Images.Add(new NoteImage()
             {
                 ImgLocationType = ImgLocationType.Local,
-                X = 10,
-                Y = 10,
+                X = NoteVM.NewNoteImgX,
+                Y = NoteVM.NewNoteImgY,
                 ImgContentType = ContentType,
                 ImgURI = fPath,
                 Width = sKBitmapImg.Width,
@@ -791,7 +791,7 @@ private async Task ShowCanvasContextMenu(MouseEventArgs e)
                 await HideCanvasContextMenu();
                 await HideImgContextMenu();
             }
-
+        
         // Get the bounding rectangle of the div 
         var containerRect = await  JSRuntime.InvokeAsync<BoundClientRect>("getBoundClientRect", dropZoneElement );
         await Task.Delay(10);
@@ -801,8 +801,12 @@ private async Task ShowCanvasContextMenu(MouseEventArgs e)
 
         if(e.ClientY < dataSvs.Wdimension.Height - 52){
             await snCanvasContext.ShowAsync(relativeX, relativeY); // Use adjusted values for correct positioning
+            NoteVM.NewNoteImgX = (int)relativeX;
+            NoteVM.NewNoteImgY = (int)relativeY;
         }else{
             await snCanvasContext.ShowAsync(relativeX, relativeY-52); // Use adjusted values for correct positioning
+            NoteVM.NewNoteImgX = (int)relativeX;
+            NoteVM.NewNoteImgY = (int)(relativeY-52);
         }
     
         
@@ -832,7 +836,7 @@ private async Task ShowCanvasContextMenu(MouseEventArgs e)
 
 #region ImgContextMenu
     private SNContextMenu snImgcontextMenu;
-
+    
 private async Task ShowImgContextMenu(MouseEventArgs e, NoteImage noteImage)
     {
         try
@@ -841,7 +845,7 @@ private async Task ShowImgContextMenu(MouseEventArgs e, NoteImage noteImage)
                 await HideCanvasContextMenu();
                 await HideImgContextMenu();
 
-                 if(noteImage.Selected == false){
+                if(noteImage.Selected == false){
                 ContextImg = noteImage; 
                 
                 // Get the bounding rectangle of the div
@@ -853,8 +857,10 @@ private async Task ShowImgContextMenu(MouseEventArgs e, NoteImage noteImage)
 
                 if(e.ClientY < dataSvs.Wdimension.Height - 150){
                     await snImgcontextMenu.ShowAsync(relativeX, relativeY); // Use adjusted values for correct positioning
+                   
                 }else{
                     await snImgcontextMenu.ShowAsync(relativeX, relativeY-144); // Use adjusted values for correct positioning
+                  
                 }
             }
            

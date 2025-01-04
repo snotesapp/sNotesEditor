@@ -32,6 +32,9 @@ namespace BlazorApp1.ViewModels
 
         public bool showNoteSummary = true;
 
+        public int NewNoteImgX;
+        public int NewNoteImgY;
+
 
         public void AddNCNotes(NotesCollection notesCollection)
         {
